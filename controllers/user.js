@@ -91,7 +91,7 @@ exports.loginPostController = async (req, res, next) => {
       req.flash("fail", "Invalid Credentials");
       return res.redirect("/user/login");
     }
-    // set session in req
+    // set session which will be managed by mongodb
     req.session.isLogin = true;
     req.session.user = user;
     req.session.save((err) => {
