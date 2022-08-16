@@ -20,7 +20,7 @@ const middlewares = [
 app.use(middlewares);
 
 // use routes
-app.use("/auth", require("./routes/auth"));
+app.use("/user", require("./routes/user"));
 app.use("/blog", require("./routes/blog"));
 
 const PORT = 7000;
