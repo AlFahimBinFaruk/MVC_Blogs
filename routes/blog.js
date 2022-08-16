@@ -1,20 +1,45 @@
-const router =require("express").Router()
+const router = require("express").Router();
+// validators
+const blogValidator = require("../validators/blogValidations/blog");
+// upload middleware
+const uploadFile = require("../middlewares/handleUpload");
+// authentication middlewares
+const { isAuthenticated } = require("../middlewares/checkAuthentication");
+// controllers
+const {
+  createBlogGetController,
+  createBlogPostController,
+  editBlogGetController,
+  editBlogPostController,
+  getMyBlogsController,
+  deleteBlogController,
+  getMyBlogDetailsController,
+} = require("../controllers/blog");
 
-router.get("/create",(req,res)=>{
-    res.render("blog/createBlog.ejs")
-})
+// Get my Blog list route
+router.get("/", isAuthenticated, getMyBlogsController);
 
-router.get("/edit/:id",(req,res)=>{
-    res.render("blog/editBlog.ejs")
-})
+// Get my blog details
+router.get("/details/:id", isAuthenticated, getMyBlogDetailsController);
 
-router.get("/my-blogs",(req,res)=>{
-    res.render("blog/myBlogs.ejs")
-})
+// Create Blog routes
+router.get("/create", isAuthenticated, createBlogGetController);
+router.post(
+  "/create",
+  uploadFile.single("thumbnail"),
+  blogValidator,
+  createBlogPostController
+);
 
-router.get("/details",(req,res)=>{
-    res.render("blog/blogDetails.ejs")
-})
+// Edit Blog routes
+router.get("/edit/:id", isAuthenticated, editBlogGetController);
+router.post(
+  "/edit/:id",
+  uploadFile.single("thumbnail"),
+  editBlogPostController
+);
 
+// Delete Blog routes
+router.get("/delete/:id", isAuthenticated, deleteBlogController);
 
-module.exports=router
+module.exports = router;

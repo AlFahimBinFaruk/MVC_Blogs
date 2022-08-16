@@ -6,7 +6,7 @@ const storage = multer.diskStorage({
     cb(null, "public/thumbnails");
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname + "-" + Date.now());
+    cb(null, Date.now() + "-" + file.originalname);
   },
 });
 
@@ -15,7 +15,7 @@ const uploadFile = multer({
   limits: {
     fileSize: 1024 * 1024 * 5,
   },
-  fileFilter: (req, res, cb) => {
+  fileFilter: (req, file, cb) => {
     const types = /jpeg|jpg|png|gif/;
     const extname = types.test(
       path.extname(file.originalname).toLocaleLowerCase()

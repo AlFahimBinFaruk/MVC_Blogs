@@ -1,12 +1,23 @@
 <%- include("../header.ejs") %>
 
-<div
-  class="d-flex justify-content-center align-items-center flex-column"
->
+<div class="d-flex justify-content-center align-items-center flex-column">
   <h5 class="mb-4">My Blogs</h5>
-  <div class="card card-body">
-    <h6>something</h6>
+  <!-- start if -->
+  <% if(blogList.length >0){ %>
+  <!-- start for of loop -->
+  <% for (let blog of blogList) { %>
+  <div class="card card-body mb-3">
+   <a href="/blog/details/<%= blog._id %>">
+    <h6><%= blog.title %></h6>
+   </a>
   </div>
+  <% } %>
+  <!-- end for of loop -->
+  <!-- end if start else -->
+  <% }else{ %>
+  <h6>No Blog to show!!</h6>
+  <!-- end else -->
+  <% } %>
 </div>
 
 <%- include("../footer.ejs") %>

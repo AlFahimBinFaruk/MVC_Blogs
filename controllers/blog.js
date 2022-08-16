@@ -17,33 +17,46 @@ exports.getMyBlogsController = async (req, res, next) => {
   }
 };
 
+// get my blog details
+exports.getMyBlogDetailsController = async (req, res, next) => {
+  try {
+    let blogDetails = await Blog.findOne({
+      _id: req.params.id,
+      bloggerId: req.user._id,
+    });
+    res.render("blog/blogDetails.ejs", {
+      flashMsg: Flash.getMsg(req),
+      blogDetails,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // create blog get controller
 exports.createBlogGetController = (req, res) => {
   res.render("blog/createBlog.ejs", {
     flashMsg: Flash.getMsg(req),
-    title: "",
     errorobj: {},
-    value: {},
   });
 };
 
 // create blog post handler
 exports.createBlogPostController = async (req, res, next) => {
   let { title, description } = req.body;
-
   // error validations
   let error = validationResult(req).formatWith(errorformat);
   // if error show error
   if (!error.isEmpty()) {
     return res.render("blog/createBlog.ejs", {
       flashMsg: Flash.getMsg(req),
-      title: "",
       errorobj: error.mapped(),
     });
   }
 
   // create new blog
   let blog = new Blog({
+    bloggerId: req.user._id,
     title,
     description,
   });
@@ -60,6 +73,7 @@ exports.createBlogPostController = async (req, res, next) => {
     // redirect to home/my blog list
     res.redirect("/");
   } catch (error) {
+    req.flash("fail", "error occured");
     next(error);
   }
 };
@@ -124,12 +138,12 @@ exports.editBlogPostController = async (req, res, next) => {
     let thumbnail = blog.thumbnail;
 
     if (req.file) {
-      thumbnail = `/uploads/${req.file.filename}`;
+      thumbnail = `/thumbnails/${req.file.filename}`;
     }
     //    update blog
     await Blog.findOneAndUpdate(
       {
-        _id: postId,
+        _id: blogId,
       },
       {
         $set: {
@@ -152,7 +166,7 @@ exports.editBlogPostController = async (req, res, next) => {
 };
 
 exports.deleteBlogController = async (req, res, next) => {
-  let blogId = req.params.blogId;
+  let blogId = req.params.id;
 
   try {
     // if the blog exits and you can access it

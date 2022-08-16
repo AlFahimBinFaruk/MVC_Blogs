@@ -1,6 +1,7 @@
 const { body } = require("express-validator");
 const User = require("../../models/user");
-module.exports = [
+
+const registerValidator = [
   body("username")
     .isLength({ min: 2, max: 15 })
     .withMessage("Username must be beetween 2 to 15")
@@ -25,3 +26,5 @@ module.exports = [
     .isLength({ min: 5 })
     .withMessage("Your password must be greater than 6 chars"),
 ];
+
+module.exports = registerValidator;

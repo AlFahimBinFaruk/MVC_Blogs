@@ -1,13 +1,13 @@
 exports.isAuthenticated = (req, res, next) => {
   if (!req.session.isLogin) {
-    return res.redirect("/auth/login");
+    return res.redirect("/user/login");
   }
   next();
 };
 
-exports.isUnuthenticated = (req, res, next) => {
+exports.isUnauthenticated = (req, res, next) => {
   if (req.session.isLogin) {
-    return res.redirect("/dashboard");
+    return res.redirect("/");
   }
   next();
 };

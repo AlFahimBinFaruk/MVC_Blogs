@@ -1,18 +1,29 @@
 <%- include("../header.ejs") %>
 
-<div
-  class="d-flex justify-content-center align-items-center flex-column"
->
- <div class="col-4 text-center">
-    <img src="/thumbnails/test.jpg" alt="" srcset="" class="mx-auto">
-  <h6>somehisg</h6>
-  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis ab voluptatum in?</p>
-  <!-- btns -->
-  <div class="d-flex justify-content-between">
-    <button class="btn btn-warning">Edit</button>
-    <button class="btn btn-danger">Delete</button>
+<div class="d-flex justify-content-center align-items-center flex-column">
+  <!-- start if -->
+  <% if(blogDetails){ %>
+  <div class="col-4 text-center">
+    <img src="<%= blogDetails.thumbnail %>" alt="" srcset="" class="mx-auto" />
+    <h6><%= blogDetails.title %></h6>
+    <p><%= blogDetails.description %></p>
+    <!-- btns -->
+    <div class="d-flex justify-content-between">
+      <!-- edit -->
+      <a href="/blog/edit/<%= blogDetails._id %>">
+        <button class="btn btn-warning">Edit</button>
+      </a>
+      <!-- delete  -->
+      <a href="/blog/delete/<%= blogDetails._id %>">
+        <button class="btn btn-danger">Delete</button>
+      </a>
+    </div>
   </div>
- </div>
+  <!-- end if start else -->
+  <% }else { %>
+  <h6>Something went wrong!</h6>
+  <!-- end else -->
+  <% } %>
 </div>
 
 <%- include("../footer.ejs") %>

@@ -4,18 +4,47 @@
   class="d-flex justify-content-center align-items-center vh-100 flex-column"
 >
   <h5>Edit Blog</h5>
-  <form>
+  <form
+    action="/blog/edit/<%=blog._id %>"
+    method="POST"
+    enctype="multipart/form-data"
+  >
     <div class="mb-3">
       <label class="form-label">Title</label>
-      <input type="text" class="form-control" />
+      <input
+        type="text"
+        class="form-control"
+        name="title"
+        value="<%=blog.title %>"
+      />
+      <!-- invaid feedback -->
+      <div class="invalid-feedback">
+        <%= errorobj.title && errorobj.title %>
+      </div>
     </div>
     <div class="mb-3">
-      <label class="form-label">Thumbnail</label>
-      <input type="file" class="form-control" />
+      <% if(blog.thumbnail){ %>
+      <div>
+        <p class="mb-0">previous thumbnail</p>
+        <img src="<%= blog.thumbnail %>" alt="" srcset="" class="my-3" />
+      </div>
+      <% } %>
+      <label class="form-label">Chose new thumbnail</label>
+      <input type="file" class="form-control" name="thumbnail" />
+      <!-- invaid feedback -->
+      <div class="invalid-feedback">
+        <%= errorobj.thumbnail && errorobj.thumbnail %>
+      </div>
     </div>
     <div class="mb-3">
       <label class="form-label">Description</label>
-      <textarea class="form-control" rows="3"></textarea>
+      <textarea class="form-control" rows="3" name="description">
+<%=blog.description %></textarea
+      >
+      <!-- invaid feedback -->
+      <div class="invalid-feedback">
+        <%= errorobj.description && errorobj.description %>
+      </div>
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
   </form>

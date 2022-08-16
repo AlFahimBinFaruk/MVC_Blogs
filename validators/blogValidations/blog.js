@@ -1,5 +1,7 @@
 const { body } = require("express-validator");
-module.exports = [
+
+const blogValidator = [
   body("title").not().isEmpty().withMessage("Title cannnot be empty!").trim(),
-  body("description").trim(),
 ];
+
+module.exports = blogValidator;
